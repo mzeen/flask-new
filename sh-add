@@ -1,0 +1,128 @@
+SSH-ADD(1)                BSD General Commands Manual               SSH-ADD(1)
+
+NNAAMMEE
+     sssshh--aadddd — adds private key identities to the authentication agent
+
+SSYYNNOOPPSSIISS
+     sssshh--aadddd [--ccDDddkkLLllXXxx] [--EE _f_i_n_g_e_r_p_r_i_n_t___h_a_s_h] [--tt _l_i_f_e] [_f_i_l_e _._._.]
+     sssshh--aadddd --ss _p_k_c_s_1_1
+     sssshh--aadddd --ee _p_k_c_s_1_1
+
+DDEESSCCRRIIPPTTIIOONN
+     sssshh--aadddd adds private key identities to the authentication agent,
+     ssh-agent(1).  When run without arguments, it adds the files
+     _~_/_._s_s_h_/_i_d___r_s_a, _~_/_._s_s_h_/_i_d___d_s_a, _~_/_._s_s_h_/_i_d___e_c_d_s_a, _~_/_._s_s_h_/_i_d___e_d_2_5_5_1_9 and
+     _~_/_._s_s_h_/_i_d_e_n_t_i_t_y.  After loading a private key, sssshh--aadddd will try to load
+     corresponding certificate information from the filename obtained by
+     appending _-_c_e_r_t_._p_u_b to the name of the private key file.  Alternative
+     file names can be given on the command line.
+
+     If any file requires a passphrase, sssshh--aadddd asks for the passphrase from
+     the user.  The passphrase is read from the user's tty.  sssshh--aadddd retries
+     the last passphrase if multiple identity files are given.
+
+     The authentication agent must be running and the SSH_AUTH_SOCK environ‐
+     ment variable must contain the name of its socket for sssshh--aadddd to work.
+
+     The options are as follows:
+
+     --cc      Indicates that added identities should be subject to confirmation
+             before being used for authentication.  Confirmation is performed
+             by ssh-askpass(1).  Successful confirmation is signaled by a zero
+             exit status from ssh-askpass(1), rather than text entered into
+             the requester.
+
+     --DD      Deletes all identities from the agent.
+
+     --dd      Instead of adding identities, removes identities from the agent.
+             If sssshh--aadddd has been run without arguments, the keys for the
+             default identities and their corresponding certificates will be
+             removed.  Otherwise, the argument list will be interpreted as a
+             list of paths to public key files to specify keys and certifi‐
+             cates to be removed from the agent.  If no public key is found at
+             a given path, sssshh--aadddd will append _._p_u_b and retry.
+
+     --EE _f_i_n_g_e_r_p_r_i_n_t___h_a_s_h
+             Specifies the hash algorithm used when displaying key finger‐
+             prints.  Valid options are: “md5” and “sha256”.  The default is
+             “sha256”.
+
+     --ee _p_k_c_s_1_1
+             Remove keys provided by the PKCS#11 shared library _p_k_c_s_1_1.
+
+     --kk      When loading keys into or deleting keys from the agent, process
+             plain private keys only and skip certificates.
+
+     --LL      Lists public key parameters of all identities currently repre‐
+             sented by the agent.
+
+     --ll      Lists fingerprints of all identities currently represented by the
+             agent.
+
+     --ss _p_k_c_s_1_1
+             Add keys provided by the PKCS#11 shared library _p_k_c_s_1_1.
+
+     --tt _l_i_f_e
+             Set a maximum lifetime when adding identities to an agent.  The
+             lifetime may be specified in seconds or in a time format speci‐
+             fied in sshd_config(5).
+
+     --XX      Unlock the agent.
+
+     --xx      Lock the agent with a password.
+
+EENNVVIIRROONNMMEENNTT
+     DISPLAY and SSH_ASKPASS
+             If sssshh--aadddd needs a passphrase, it will read the passphrase from
+             the current terminal if it was run from a terminal.  If sssshh--aadddd
+             does not have a terminal associated with it but DISPLAY and
+             SSH_ASKPASS are set, it will execute the program specified by
+             SSH_ASKPASS (by default “ssh-askpass”) and open an X11 window to
+             read the passphrase.  This is particularly useful when calling
+             sssshh--aadddd from a _._x_s_e_s_s_i_o_n or related script.  (Note that on some
+             machines it may be necessary to redirect the input from _/_d_e_v_/_n_u_l_l
+             to make this work.)
+
+     SSH_AUTH_SOCK
+             Identifies the path of a UNIX-domain socket used to communicate
+             with the agent.
+
+FFIILLEESS
+     ~/.ssh/identity
+             Contains the protocol version 1 RSA authentication identity of
+             the user.
+
+     ~/.ssh/id_dsa
+             Contains the protocol version 2 DSA authentication identity of
+             the user.
+
+     ~/.ssh/id_ecdsa
+             Contains the protocol version 2 ECDSA authentication identity of
+             the user.
+
+     ~/.ssh/id_ed25519
+             Contains the protocol version 2 Ed25519 authentication identity
+             of the user.
+
+     ~/.ssh/id_rsa
+             Contains the protocol version 2 RSA authentication identity of
+             the user.
+
+     Identity files should not be readable by anyone but the user.  Note that
+     sssshh--aadddd ignores identity files if they are accessible by others.
+
+EEXXIITT SSTTAATTUUSS
+     Exit status is 0 on success, 1 if the specified command fails, and 2 if
+     sssshh--aadddd is unable to contact the authentication agent.
+
+SSEEEE AALLSSOO
+     ssh(1), ssh-agent(1), ssh-askpass(1), ssh-keygen(1), sshd(8)
+
+AAUUTTHHOORRSS
+     OpenSSH is a derivative of the original and free ssh 1.2.12 release by
+     Tatu Ylonen.  Aaron Campbell, Bob Beck, Markus Friedl, Niels Provos, Theo
+     de Raadt and Dug Song removed many bugs, re-added newer features and cre‐
+     ated OpenSSH.  Markus Friedl contributed the support for SSH protocol
+     versions 1.5 and 2.0.
+
+BSD                             March 30, 2015                             BSD

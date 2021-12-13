@@ -25,7 +25,7 @@ launchpadlib==1.10.5
 lazr.restfulclient==0.13.5
 lazr.uri==1.0.3
 louis==3.0.0
-lxml==4.0.0
+lxml==4.6.5
 Mako==1.0.7
 MarkupSafe==1.0
 oauth==1.0.1
